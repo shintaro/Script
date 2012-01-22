@@ -25,6 +25,10 @@ if (len(argvs) < 2):
 host = argvs[1][0:argvs[1].find("/")]
 path = argvs[1][argvs[1].find("/"):]
 
+if (path[0] != '/'):
+	print "Given URL is invalid."
+	exit()
+
 print 'Connecting to', host, '...'
 
 conn = httplib.HTTPConnection(host)
@@ -34,17 +38,21 @@ res = conn.getresponse()
 if (res.status != 200):
 	print 'The server returns \"', res.status, res.reason, '\"'
 	print 'Please check URL.'
-	conn.close()
 	exit()
 
 # Get all git repositories on page
 pagesource = res.read()
 pattern = re.compile(">[a-z|/].*\.git<")
 repos = pattern.findall(pagesource)
+conn.close()
+
+if (len(repos) < 1):
+	print "No git repository found."
+	exit()
+
+print len(repos), "git repositories found."
 
 for l in repos:
 	print "Executing 'git clone", "git://" + host + "/" + l[1:-1] + "'"
 	subprocess.call(['git', 'clone', 'git://' + host + "/" + l[1:-1]])
 
-
- 
