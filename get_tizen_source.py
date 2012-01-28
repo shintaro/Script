@@ -1,8 +1,8 @@
 # This is a python script to download all source code from the git on webpage.  
 # Commandline "git" must be installed.
 #
-# Usage:   $ python test.py URL
-# Example: $ python test.py source.tizen.org/git/
+# Usage:   $ python get_tizen_source.py URL
+# Example: $ python get_tizen_source.py source.tizen.org/git/
 
 import httplib
 import sys
